@@ -18,9 +18,9 @@ ui <- fluidPage(
    # Sidebar with a slider input for number of bins 
    sidebarLayout(
       sidebarPanel(
-        p(strong(("Upload your zip code file. App expects one column with header 'Zips'.")),  
+        p(strong("Upload your zip code file. App expects one column with header 'Zips'.")),  
         fileInput(inputId = "datafile", label = "Upload a csv zipcode file", multiple = FALSE, placeholder = "No file selected", accept = "csv"),
-        p(strong(("Customize your image")),
+        p(strong("Customize your image")),
         textInput(inputId="toptext", label="Top Text", value = "Bride & Groom"),
         textInput(inputId="bottext", label="Bottom Text", value = "June 7th 2018"),
         textInput(inputId="wedzip", label="Zip Code for Wedding", value = "66212"),
