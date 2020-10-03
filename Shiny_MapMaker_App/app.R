@@ -30,12 +30,13 @@ ui <- fluidPage(
         textInput(inputId="var_heartcolor", label="Heart Color", value = '#ce0202'),
         textInput(inputId="var_statefillcolor", label="State Fill Color", value = "#6b6c6d"),
         textInput(inputId="var_statelinecolor", label="State Line Color", value = "#c0c2c4"),
-        textInput(inputId="var_textcolor", label="Text Color", value = "#FFFFFF")
+        textInput(inputId="var_textcolor", label="Text Color", value = "#FFFFFF"),
+        textInput(inputId="watermark", label="Remove Watermark Password", value = "***")
       ),
       
       # Show a plot of the generated distribution
       mainPanel(
-         plotOutput("mapPlot"),
+         plotOutput("mapPlot", width = "100%",height = "500px"),
          #plotOutput("test"),
          br(),
          br(),
@@ -75,11 +76,12 @@ server <- function(input, output) {
       subset(uzips, !(ZIP %in% ZipLatLong$Zip)) # Use this code to see if there are any zip codes that aren't in the lookup list
       })
     
+    
     #######THIS WORKS  
-   output$test <- renderPlot({
-      hist(rnorm(100), main = input$toptext)
-      plot(ZipLatLong$Latitude,ZipLatLong$Longitude, main = input$toptext) 
-       })
+   #output$test <- renderPlot({
+   #    hist(rnorm(100), main = input$toptext)
+   #   plot(ZipLatLong$Latitude,ZipLatLong$Longitude, main = input$toptext) 
+  #     })
     #############
     
    output$mapPlot <- renderPlot({
@@ -129,14 +131,17 @@ server <- function(input, output) {
                   shape = "❤", #3 "❤", ◎",             
                    stroke = 1)+ #2
         theme_void() + #removes all the chart stuff
-        #theme(plot.margin = unit(c(5,1,1,1), "cm"))+
       #theme(plot.margin = unit(c(2.55,1.1,3,1.1), "cm"),plot.background = element_rect(fill = input$var_backgroundcolor )) + #trial and error with the plot margins to get it to fit 8x10 dimensions
-       theme(aspect.ratio=8.5/10.5,plot.background = element_rect(fill = input$var_backgroundcolor )) + #trial and error with the plot margins to get it to fit 8x10 dimensions
-       annotate("text", x = -97, y = 51.75, colour = input$var_textcolor, size=18,family="URW Chancery L",fontface="italic", label = input$toptext) + # try to center a pain
-       annotate("text", x = -98, y = 24.25, colour = input$var_textcolor, size=13,family="URW Chancery L",fontface="italic", label = input$bottext) # try to center a pain
-    
-     #finalprintplot + theme(plot.margin = unit(c(2,1,4,1), "cm"),plot.background = element_rect(fill = input$var_backgroundcolor)) 
-     finalprintplot + theme(plot.margin = unit(c(.125,.06,.25,.125), "cm"),plot.background = element_rect(fill = input$var_backgroundcolor)) 
+       #theme(aspect.ratio=8.5/10.5,plot.background = element_rect(fill = input$var_backgroundcolor )) + #trial and error with the plot margins to get it to fit 8x10 dimensions
+       annotate("text", x = -97, y = 54, colour = input$var_textcolor, size=18,family="URW Chancery L",fontface="italic", label = input$toptext) + # try to center a pain
+       annotate("text", x = -97, y = 40, colour = "white", size=17, label = ifelse(input$watermark=="pTNKpQTC284yHP","", "WATERMARKED"),alpha = .75) + # WATERMARK
+       annotate("text", x = -98, y = 23.5, colour = input$var_textcolor, size=13,family="URW Chancery L",fontface="italic", label = input$bottext) # try to center a pain
+     
+      #finalprintplot + theme(plot.margin = unit(c(.125,.06,.25,.125), "cm"),plot.background = element_rect(fill = input$var_backgroundcolor))
+      finalprintplot + theme(plot.margin = unit(c(1.5,.06,1,.125), "cm"),plot.background = element_rect(fill = input$var_backgroundcolor))
+      
+     #finalprintplot+ theme(plot.margin = unit(c(2.55,1.1,3,1.1), "cm"),plot.background = element_rect(fill = input$var_backgroundcolor )) #trial and error with the plot margins to get it to fit 8x10 dimensions
+
    })   
     
     
